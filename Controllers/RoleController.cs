@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using SPMS_API.Data;
-using SPMS_API.Models;
 using Microsoft.EntityFrameworkCore;
+using SPMS_API.Common;
+using SPMS_API.Data;
+using SPMS_API.DTOs;
+using SPMS_API.Models;
 
 namespace SPMS_API.Controllers
 {
@@ -19,62 +21,200 @@ namespace SPMS_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var roles = await _context.Role.ToListAsync();
-            return Ok(roles);
+            try
+            {
+                var roles = await _context.Role
+                    .Select(r => new ReadRole
+                    {
+                        RoleId = r.RoleId,
+                        RoleName = r.RoleName,
+                        Description = r.Description
+                    })
+                    .ToListAsync();
+
+                return Ok(new ApiResponse<List<ReadRole>>
+                {
+                    Success = true,
+                    Message = "Roles Retrieved Successfully",
+                    Data = roles
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<List<ReadRole>>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving roles",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var role = await _context.Role.FindAsync(id);
-            if (role == null)
+            try
             {
-                return NotFound();
+                var role = await _context.Role
+                    .Where(r => r.RoleId == id)
+                    .Select(r => new ReadRole
+                    {
+                        RoleId = r.RoleId,
+                        RoleName = r.RoleName,
+                        Description = r.Description
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (role == null)
+                {
+                    return NotFound(new ApiResponse<ReadRole>
+                    {
+                        Success = false,
+                        Message = "Role Not Found",
+                        Errors = new List<string> { $"No role found with Id {id}" }
+                    });
+                }
+
+                return Ok(new ApiResponse<ReadRole>
+                {
+                    Success = true,
+                    Message = "Role Retrieved Successfully",
+                    Data = role
+                });
             }
-            return Ok(role);
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Role role)
+        public async Task<IActionResult> Add(CreateRole dto)
         {
-            role.RoleId = 0;
-            _context.Role.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = role.RoleId }, role);
+            try
+            {
+                var role = new Role
+                {
+                    RoleName = dto.RoleName,
+                    Description = dto.Description
+                };
+
+                _context.Role.Add(role);
+                await _context.SaveChangesAsync();
+
+                var response = new ReadRole
+                {
+                    RoleId = role.RoleId,
+                    RoleName = role.RoleName,
+                    Description = role.Description
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = role.RoleId }, new ApiResponse<ReadRole>
+                {
+                    Success = true,
+                    Message = "Role Added Successfully",
+                    Data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while adding role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Role role)
+        [HttpPut("{id:int:min(1)}")]
+        public async Task<IActionResult> Update(int id, UpdateRole dto)
         {
-            if (role.RoleId != 0 && role.RoleId != id)
+            try
             {
-                return BadRequest("ID in route parameter does not match ID in request body.");
-            }
+                var role = await _context.Role.FindAsync(id);
 
-            var exists = await _context.Role.FindAsync(id);
-            if (exists == null)
+                if (role == null)
+                {
+                    return NotFound(new ApiResponse<ReadRole>
+                    {
+                        Success = false,
+                        Message = "Role Not Found",
+                        Errors = new List<string> { $"No role found with Id {id}" }
+                    });
+                }
+
+                role.RoleName = dto.RoleName;
+                role.Description = dto.Description;
+
+                await _context.SaveChangesAsync();
+
+                var response = new ReadRole
+                {
+                    RoleId = role.RoleId,
+                    RoleName = role.RoleName,
+                    Description = role.Description
+                };
+
+                return Ok(new ApiResponse<ReadRole>
+                {
+                    Success = true,
+                    Message = "Role Updated Successfully",
+                    Data = response
+                });
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(new ApiResponse<ReadRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while updating role",
+                    Errors = new List<string> { ex.Message }
+                });
             }
-
-            exists.RoleName = role.RoleName;
-            exists.Description = role.Description;
-
-            await _context.SaveChangesAsync();
-            return Ok(exists);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var role = await _context.Role.FindAsync(id);
-            if (role == null)
+            try
             {
-                return NotFound();
+                var role = await _context.Role.FindAsync(id);
+
+                if (role == null)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Role Not Found",
+                        Errors = new List<string> { $"No role found with Id {id}" }
+                    });
+                }
+
+                _context.Role.Remove(role);
+                await _context.SaveChangesAsync();
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Role Deleted Successfully",
+                    Data = null
+                });
             }
-            _context.Role.Remove(role);
-            await _context.SaveChangesAsync();
-            return Ok("Role deleted successfully.");
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred while deleting role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
     }
 }

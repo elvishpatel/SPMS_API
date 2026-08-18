@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using SPMS_API.Data;
-using SPMS_API.Models;
 using Microsoft.EntityFrameworkCore;
+using SPMS_API.Common;
+using SPMS_API.Data;
+using SPMS_API.DTOs;
+using SPMS_API.Models;
 
 namespace SPMS_API.Controllers
 {
@@ -19,70 +21,200 @@ namespace SPMS_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var projects = await _context.ProjectMaster.ToListAsync();
-            return Ok(projects);
+            try
+            {
+                var projects = await _context.ProjectMaster
+                    .Select(p => new ReadProjectMaster
+                    {
+                        ProjectId = p.ProjectId,
+                        ProjectTitle = p.ProjectTitle,
+                        Description = p.Description
+                    })
+                    .ToListAsync();
+
+                return Ok(new ApiResponse<List<ReadProjectMaster>>
+                {
+                    Success = true,
+                    Message = "Projects Retrieved Successfully",
+                    Data = projects
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<List<ReadProjectMaster>>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving projects",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var project = await _context.ProjectMaster.FindAsync(id);
-
-            if (project == null)
+            try
             {
-                return NotFound();
-            }
+                var project = await _context.ProjectMaster
+                    .Where(p => p.ProjectId == id)
+                    .Select(p => new ReadProjectMaster
+                    {
+                        ProjectId = p.ProjectId,
+                        ProjectTitle = p.ProjectTitle,
+                        Description = p.Description
+                    })
+                    .FirstOrDefaultAsync();
 
-            return Ok(project);
+                if (project == null)
+                {
+                    return NotFound(new ApiResponse<ReadProjectMaster>
+                    {
+                        Success = false,
+                        Message = "Project Not Found",
+                        Errors = new List<string> { $"No project found with Id {id}" }
+                    });
+                }
+
+                return Ok(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = true,
+                    Message = "Project Retrieved Successfully",
+                    Data = project
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving project",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(ProjectMaster project)
+        public async Task<IActionResult> Add(CreateProjectMaster dto)
         {
-            project.ProjectId = 0;
-            _context.ProjectMaster.Add(project);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var project = new ProjectMaster
+                {
+                    ProjectTitle = dto.ProjectTitle,
+                    Description = dto.Description
+                };
 
-            return CreatedAtAction(nameof(GetById), new { id = project.ProjectId }, project);
+                _context.ProjectMaster.Add(project);
+                await _context.SaveChangesAsync();
+
+                var response = new ReadProjectMaster
+                {
+                    ProjectId = project.ProjectId,
+                    ProjectTitle = project.ProjectTitle,
+                    Description = project.Description
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = project.ProjectId }, new ApiResponse<ReadProjectMaster>
+                {
+                    Success = true,
+                    Message = "Project Added Successfully",
+                    Data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = false,
+                    Message = "Error occurred while adding project",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, ProjectMaster project)
+        [HttpPut("{id:int:min(1)}")]
+        public async Task<IActionResult> Update(int id, UpdateProjectMaster dto)
         {
-            if (project.ProjectId != 0 && project.ProjectId != id)
+            try
             {
-                return BadRequest("ID in route parameter does not match ID in request body.");
+                var project = await _context.ProjectMaster.FindAsync(id);
+
+                if (project == null)
+                {
+                    return NotFound(new ApiResponse<ReadProjectMaster>
+                    {
+                        Success = false,
+                        Message = "Project Not Found",
+                        Errors = new List<string> { $"No project found with Id {id}" }
+                    });
+                }
+
+                project.ProjectTitle = dto.ProjectTitle;
+                project.Description = dto.Description;
+
+                await _context.SaveChangesAsync();
+
+                var response = new ReadProjectMaster
+                {
+                    ProjectId = project.ProjectId,
+                    ProjectTitle = project.ProjectTitle,
+                    Description = project.Description
+                };
+
+                return Ok(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = true,
+                    Message = "Project Updated Successfully",
+                    Data = response
+                });
             }
-
-            var existingProject = await _context.ProjectMaster.FindAsync(id);
-
-            if (existingProject == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = false,
+                    Message = "Error occurred while updating project",
+                    Errors = new List<string> { ex.Message }
+                });
             }
-
-            existingProject.ProjectTitle = project.ProjectTitle;
-            existingProject.Description = project.Description;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(existingProject);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var project = await _context.ProjectMaster.FindAsync(id);
-
-            if (project == null)
+            try
             {
-                return NotFound();
+                var project = await _context.ProjectMaster.FindAsync(id);
+
+                if (project == null)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Project Not Found",
+                        Errors = new List<string> { $"No project found with Id {id}" }
+                    });
+                }
+
+                _context.ProjectMaster.Remove(project);
+                await _context.SaveChangesAsync();
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Project Deleted Successfully",
+                    Data = null
+                });
             }
-
-            _context.ProjectMaster.Remove(project);
-            await _context.SaveChangesAsync();
-
-            return Ok("Project deleted successfully.");
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred while deleting project",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
     }
 }

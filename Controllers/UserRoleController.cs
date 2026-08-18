@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SPMS_API.Common;
 using SPMS_API.Data;
+using SPMS_API.DTOs;
 using SPMS_API.Models;
 
 namespace SPMS_API.Controllers
@@ -18,67 +19,224 @@ namespace SPMS_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserRole>> GetALl()
+        public async Task<IActionResult> GetAll()
         {
-            var userroles = await _context.UserRole.ToListAsync();
-            return Ok(userroles);
+            try
+            {
+                var userRoles = await _context.UserRole
+                    .Include(ur => ur.Role)
+                    .Include(ur => ur.User)
+                    .Select(ur => new ReadUserRole
+                    {
+                        RolePermissionId = ur.RolePermissionId,
+                        RoleId = ur.RoleId,
+                        RoleName = ur.Role != null ? ur.Role.RoleName : null,
+                        UserId = ur.UserId,
+                        FullName = ur.User != null ? ur.User.FullName : null
+                    })
+                    .ToListAsync();
+
+                return Ok(new ApiResponse<List<ReadUserRole>>
+                {
+                    Success = true,
+                    Message = "User Roles Retrieved Successfully",
+                    Data = userRoles
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<List<ReadUserRole>>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving user roles",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserRole>> GetById(int id)
+        [HttpGet("{id:int:min(1)}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var userrole = await _context.UserRole.FindAsync(id);
-            if (userrole == null)
+            try
             {
-                return NotFound();
+                var userRole = await _context.UserRole
+                    .Include(ur => ur.Role)
+                    .Include(ur => ur.User)
+                    .Where(ur => ur.RolePermissionId == id)
+                    .Select(ur => new ReadUserRole
+                    {
+                        RolePermissionId = ur.RolePermissionId,
+                        RoleId = ur.RoleId,
+                        RoleName = ur.Role != null ? ur.Role.RoleName : null,
+                        UserId = ur.UserId,
+                        FullName = ur.User != null ? ur.User.FullName : null
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (userRole == null)
+                {
+                    return NotFound(new ApiResponse<ReadUserRole>
+                    {
+                        Success = false,
+                        Message = "User Role Not Found",
+                        Errors = new List<string> { $"No user role found with Id {id}" }
+                    });
+                }
+
+                return Ok(new ApiResponse<ReadUserRole>
+                {
+                    Success = true,
+                    Message = "User Role Retrieved Successfully",
+                    Data = userRole
+                });
             }
-            return Ok(userrole);
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadUserRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving user role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
+
         [HttpPost]
-        public async Task<ActionResult<UserRole>> Add(UserRole userrole)
+        public async Task<IActionResult> Add(CreateUserRole dto)
         {
-            userrole.RolePermissionId = 0;
-            _context.UserRole.Add(userrole);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = userrole.RolePermissionId }, userrole);
+            try
+            {
+                var userRole = new UserRole
+                {
+                    RoleId = dto.RoleId,
+                    UserId = dto.UserId
+                };
+
+                _context.UserRole.Add(userRole);
+                await _context.SaveChangesAsync();
+
+                var dbUserRole = await _context.UserRole
+                    .Include(ur => ur.Role)
+                    .Include(ur => ur.User)
+                    .FirstOrDefaultAsync(ur => ur.RolePermissionId == userRole.RolePermissionId);
+
+                var response = new ReadUserRole
+                {
+                    RolePermissionId = userRole.RolePermissionId,
+                    RoleId = userRole.RoleId,
+                    RoleName = dbUserRole?.Role?.RoleName,
+                    UserId = userRole.UserId,
+                    FullName = dbUserRole?.User?.FullName
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = userRole.RolePermissionId }, new ApiResponse<ReadUserRole>
+                {
+                    Success = true,
+                    Message = "User Role Added Successfully",
+                    Data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadUserRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while adding user role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult<UserRole>> Update(int id, UserRole userrole)
+
+        [HttpPut("{id:int:min(1)}")]
+        public async Task<IActionResult> Update(int id, UpdateUserRole dto)
         {
-
-            if (userrole.RolePermissionId != 0 && userrole.RolePermissionId != id)
+            try
             {
-                return BadRequest("ID in route parameter does not match ID in request body.");
+                var userRole = await _context.UserRole.FindAsync(id);
+
+                if (userRole == null)
+                {
+                    return NotFound(new ApiResponse<ReadUserRole>
+                    {
+                        Success = false,
+                        Message = "User Role Not Found",
+                        Errors = new List<string> { $"No user role found with Id {id}" }
+                    });
+                }
+
+                userRole.RoleId = dto.RoleId;
+                userRole.UserId = dto.UserId;
+
+                await _context.SaveChangesAsync();
+
+                var dbUserRole = await _context.UserRole
+                    .Include(ur => ur.Role)
+                    .Include(ur => ur.User)
+                    .FirstOrDefaultAsync(ur => ur.RolePermissionId == userRole.RolePermissionId);
+
+                var response = new ReadUserRole
+                {
+                    RolePermissionId = userRole.RolePermissionId,
+                    RoleId = userRole.RoleId,
+                    RoleName = dbUserRole?.Role?.RoleName,
+                    UserId = userRole.UserId,
+                    FullName = dbUserRole?.User?.FullName
+                };
+
+                return Ok(new ApiResponse<ReadUserRole>
+                {
+                    Success = true,
+                    Message = "User Role Updated Successfully",
+                    Data = response
+                });
             }
-
-            var existingUserRole = await _context.UserRole.FindAsync(id);
-
-            if (existingUserRole == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(new ApiResponse<ReadUserRole>
+                {
+                    Success = false,
+                    Message = "Error occurred while updating user role",
+                    Errors = new List<string> { ex.Message }
+                });
             }
-
-            existingUserRole.RoleId = userrole.RoleId;
-            existingUserRole.UserId = userrole.UserId;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(existingUserRole);
-
-
         }
-        [HttpDelete("{id}")]
 
-        public async Task<ActionResult<SPMS_API.Models.UserRole>> Delete(int id)
+        [HttpDelete("{id:int:min(1)}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var userrole = await _context.UserRole.FindAsync(id);
-            if (userrole == null)
+            try
             {
-                return NotFound();
+                var userRole = await _context.UserRole.FindAsync(id);
+
+                if (userRole == null)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "User Role Not Found",
+                        Errors = new List<string> { $"No user role found with Id {id}" }
+                    });
+                }
+
+                _context.UserRole.Remove(userRole);
+                await _context.SaveChangesAsync();
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "User Role Deleted Successfully",
+                    Data = null
+                });
             }
-            _context.UserRole.Remove(userrole);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred while deleting user role",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
     }
 }

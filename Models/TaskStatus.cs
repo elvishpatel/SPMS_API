@@ -12,5 +12,7 @@ namespace SPMS_API.Models
 
         [Required, MaxLength(250)]
         public string TaskStatusCssClass { get; set; } = string.Empty;
+
+        public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }

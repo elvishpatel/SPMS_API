@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SPMS_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4c83769f8f5bce1beb51870543efaf58841c2d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("SPMS_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SPMS_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

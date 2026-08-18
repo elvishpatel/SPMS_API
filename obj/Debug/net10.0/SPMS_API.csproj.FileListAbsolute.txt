@@ -157,3 +157,5 @@ E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\refint\SPMS_API.dll
 E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\SPMS_API.pdb
 E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\SPMS_API.genruntimeconfig.cache
 E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\ref\SPMS_API.dll
+E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\SPMS_API.sourcelink.json
+E:\Programmes\ASP.NET II\SPMS\API\SPMS_API\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

@@ -13,226 +13,326 @@
     }
   ],
   "paths": {
-    "/api/User": {
+    "/api/Dashboard/GetTotalStudents": {
       "get": {
         "tags": [
-          "User"
+          "Dashboard"
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
     },
-    "/api/User/{id}": {
+    "/api/Dashboard/GetTotalFaculty": {
       "get": {
         "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
-              "format": "int32"
-            }
-          }
+          "Dashboard"
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
-      },
-      "put": {
+      }
+    },
+    "/api/Dashboard/GetTotalProjects": {
+      "get": {
         "tags": [
-          "User"
+          "Dashboard"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/Dashboard/GetTaskStatusSummary": {
+      "get": {
         "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
-              "format": "int32"
-            }
-          }
+          "Dashboard"
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetPrioritySummary": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetFacultyWorkload": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetStudentTasks": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetTopStudents": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetBottomStudents": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetOverdueTasks": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetUpcomingFollowUps": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetGradeDistribution": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetMonthlyCompletion": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetRoleWiseActiveUserCount": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetUsersByRole": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetRolesWithMoreThanTenUsers": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetRoleStatistics": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetUpcomingDueTasks": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetProjectTaskSummary": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetProjectScoreSummary": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetTopProjectsByScore": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetFacultyStatistics": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetStudentTaskStatistics": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetOverdueProjects": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetMonthlyCompletedTaskCount": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetFacultyRankingsByProgress": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/GetProjectTaskStatistics": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -244,24 +344,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -273,17 +356,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/CreateProjectAllocation"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/CreateProjectAllocation"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/CreateProjectAllocation"
               }
             }
           },
@@ -291,24 +374,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -324,35 +390,16 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -366,11 +413,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -379,17 +424,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/UpdateProjectAllocation"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/UpdateProjectAllocation"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectAllocation"
+                "$ref": "#/components/schemas/UpdateProjectAllocation"
               }
             }
           },
@@ -397,24 +442,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -428,35 +456,16 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectAllocation"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -480,17 +489,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/CreateProjectMaster"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/CreateProjectMaster"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/CreateProjectMaster"
               }
             }
           },
@@ -514,11 +523,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -539,11 +546,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -552,17 +557,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/UpdateProjectMaster"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/UpdateProjectMaster"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectMaster"
+                "$ref": "#/components/schemas/UpdateProjectMaster"
               }
             }
           },
@@ -584,11 +589,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -619,17 +622,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/CreateRole"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/CreateRole"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/CreateRole"
               }
             }
           },
@@ -653,11 +656,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -678,11 +679,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -691,17 +690,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/UpdateRole"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/UpdateRole"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Role"
+                "$ref": "#/components/schemas/UpdateRole"
               }
             }
           },
@@ -723,11 +722,142 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Task": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTask"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTask"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTask"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Task/{id}": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTask"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTask"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTask"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Task"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -758,17 +888,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/CreateTaskPriority"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/CreateTaskPriority"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/CreateTaskPriority"
               }
             }
           },
@@ -792,11 +922,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -817,11 +945,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -830,17 +956,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/UpdateTaskPriority"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/UpdateTaskPriority"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPriority"
+                "$ref": "#/components/schemas/UpdateTaskPriority"
               }
             }
           },
@@ -862,11 +988,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -897,17 +1021,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/CreateTaskStatus"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/CreateTaskStatus"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/CreateTaskStatus"
               }
             }
           },
@@ -931,11 +1055,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -956,11 +1078,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -969,17 +1089,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/UpdateTaskStatus"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/UpdateTaskStatus"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskStatus"
+                "$ref": "#/components/schemas/UpdateTaskStatus"
               }
             }
           },
@@ -1001,11 +1121,142 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -1024,24 +1275,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -1053,17 +1287,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/CreateUserRole"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/CreateUserRole"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/CreateUserRole"
               }
             }
           },
@@ -1071,24 +1305,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -1104,35 +1321,16 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -1146,11 +1344,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -1159,17 +1355,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/UpdateUserRole"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/UpdateUserRole"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRole"
+                "$ref": "#/components/schemas/UpdateUserRole"
               }
             }
           },
@@ -1177,24 +1373,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -1208,35 +1387,16 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRole"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -1260,17 +1420,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/CreateUserType"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/CreateUserType"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/CreateUserType"
               }
             }
           },
@@ -1294,11 +1454,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -1319,11 +1477,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -1332,17 +1488,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/UpdateUserType"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/UpdateUserType"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserType"
+                "$ref": "#/components/schemas/UpdateUserType"
               }
             }
           },
@@ -1364,11 +1520,9 @@
             "in": "path",
             "required": true,
             "schema": {
+              "minimum": 1,
               "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
+              "type": "integer",
               "format": "int32"
             }
           }
@@ -1383,38 +1537,9 @@
   },
   "components": {
     "schemas": {
-      "ProjectAllocation": {
-        "required": [
-          "projectID",
-          "studentID",
-          "facultyID",
-          "assignedDate",
-          "projectStartDate",
-          "projectEndDate",
-          "totalTasksGiven",
-          "totalCompletedTasks",
-          "progressPercentage"
-        ],
+      "CreateProjectAllocation": {
         "type": "object",
         "properties": {
-          "projectAllocationID": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "projectMaster": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/ProjectMaster"
-              }
-            ]
-          },
           "projectID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
@@ -1423,16 +1548,6 @@
             ],
             "format": "int32"
           },
-          "student": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
-          },
           "studentID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
@@ -1440,16 +1555,6 @@
               "string"
             ],
             "format": "int32"
-          },
-          "faculty": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
           },
           "facultyID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -1496,9 +1601,6 @@
             "format": "double"
           },
           "overAllGrade": {
-            "maxLength": 1,
-            "minLength": 0,
-            "pattern": "^[ABC]?$",
             "type": [
               "null",
               "string"
@@ -1506,13 +1608,38 @@
           }
         }
       },
-      "ProjectMaster": {
-        "required": [
-          "projectTitle"
-        ],
+      "CreateProjectMaster": {
         "type": "object",
         "properties": {
-          "projectId": {
+          "projectTitle": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "CreateRole": {
+        "type": "object",
+        "properties": {
+          "roleName": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "CreateTask": {
+        "type": "object",
+        "properties": {
+          "projectAllocationID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
               "integer",
@@ -1520,12 +1647,102 @@
             ],
             "format": "int32"
           },
-          "projectTitle": {
-            "maxLength": 200,
+          "taskTitle": {
             "type": "string"
           },
-          "description": {
-            "maxLength": 250,
+          "taskDescription": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "taskStatusID": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "taskPriorityID": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "assignedScore": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "earnedScore": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "null",
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "progressPercentage": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "taskAssignnedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskStartDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskDueDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskEndDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskCompletedTime": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "nextFollowUpDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "facultyRemarks": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "studentRemarks": {
             "type": [
               "null",
               "string"
@@ -1533,10 +1750,66 @@
           }
         }
       },
-      "Role": {
-        "required": [
-          "roleName"
-        ],
+      "CreateTaskPriority": {
+        "type": "object",
+        "properties": {
+          "taskPriorityName": {
+            "type": "string"
+          },
+          "taskPriorityCssClass": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateTaskStatus": {
+        "type": "object",
+        "properties": {
+          "taskStatusName": {
+            "type": "string"
+          },
+          "taskStatusCssClass": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateUser": {
+        "type": "object",
+        "properties": {
+          "userTypeId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "userCode": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "profilePicturePath": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateUserRole": {
         "type": "object",
         "properties": {
           "roleId": {
@@ -1547,11 +1820,23 @@
             ],
             "format": "int32"
           },
-          "roleName": {
+          "userId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "CreateUserType": {
+        "type": "object",
+        "properties": {
+          "userTypeName": {
             "type": "string"
           },
           "description": {
-            "maxLength": 250,
             "type": [
               "null",
               "string"
@@ -1559,14 +1844,10 @@
           }
         }
       },
-      "TaskPriority": {
-        "required": [
-          "taskPriorityName",
-          "taskPriorityCssClass"
-        ],
+      "UpdateProjectAllocation": {
         "type": "object",
         "properties": {
-          "taskPriorityId": {
+          "projectID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
               "integer",
@@ -1574,23 +1855,114 @@
             ],
             "format": "int32"
           },
-          "taskPriorityName": {
-            "maxLength": 20,
-            "type": "string"
+          "studentID": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
           },
-          "taskPriorityCssClass": {
-            "maxLength": 20,
-            "type": "string"
+          "facultyID": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "assignedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "projectStartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "projectEndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalTasksGiven": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "totalCompletedTasks": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "progressPercentage": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "overAllGrade": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       },
-      "TaskStatus": {
-        "required": [
-          "taskStatusName",
-          "taskStatusCssClass"
-        ],
+      "UpdateProjectMaster": {
         "type": "object",
         "properties": {
+          "projectTitle": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "UpdateRole": {
+        "type": "object",
+        "properties": {
+          "roleName": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "UpdateTask": {
+        "type": "object",
+        "properties": {
+          "projectAllocationID": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "taskTitle": {
+            "type": "string"
+          },
+          "taskDescription": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
           "taskStatusID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
@@ -1599,26 +1971,7 @@
             ],
             "format": "int32"
           },
-          "taskStatusName": {
-            "maxLength": 20,
-            "type": "string"
-          },
-          "taskStatusCssClass": {
-            "maxLength": 250,
-            "type": "string"
-          }
-        }
-      },
-      "User": {
-        "required": [
-          "fullName",
-          "email",
-          "password",
-          "isActive"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
+          "taskPriorityID": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
               "integer",
@@ -1626,6 +1979,109 @@
             ],
             "format": "int32"
           },
+          "assignedScore": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "earnedScore": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "null",
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "progressPercentage": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "format": "double"
+          },
+          "taskAssignnedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskStartDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskDueDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskEndDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "taskCompletedTime": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "nextFollowUpDate": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "facultyRemarks": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "studentRemarks": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "UpdateTaskPriority": {
+        "type": "object",
+        "properties": {
+          "taskPriorityName": {
+            "type": "string"
+          },
+          "taskPriorityCssClass": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateTaskStatus": {
+        "type": "object",
+        "properties": {
+          "taskStatusName": {
+            "type": "string"
+          },
+          "taskStatusCssClass": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
           "userTypeId": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
@@ -1635,7 +2091,6 @@
             "format": "int32"
           },
           "fullName": {
-            "maxLength": 250,
             "type": "string"
           },
           "userCode": {
@@ -1645,19 +2100,18 @@
             ]
           },
           "email": {
-            "maxLength": 150,
             "type": "string"
           },
           "password": {
-            "maxLength": 255,
-            "type": "string"
+            "type": [
+              "null",
+              "string"
+            ]
           },
           "mobileNumber": {
-            "maxLength": 15,
             "type": "string"
           },
           "profilePicturePath": {
-            "maxLength": 500,
             "type": "string"
           },
           "isActive": {
@@ -1671,31 +2125,9 @@
           }
         }
       },
-      "UserRole": {
-        "required": [
-          "roleId",
-          "userId"
-        ],
+      "UpdateUserRole": {
         "type": "object",
         "properties": {
-          "rolePermissionId": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
-          "role": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/Role"
-              }
-            ]
-          },
           "roleId": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
             "type": [
@@ -1703,16 +2135,6 @@
               "string"
             ],
             "format": "int32"
-          },
-          "user": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
           },
           "userId": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -1724,26 +2146,13 @@
           }
         }
       },
-      "UserType": {
-        "required": [
-          "userTypeName"
-        ],
+      "UpdateUserType": {
         "type": "object",
         "properties": {
-          "userTypeId": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
-          },
           "userTypeName": {
-            "maxLength": 50,
             "type": "string"
           },
           "description": {
-            "maxLength": 250,
             "type": [
               "null",
               "string"
@@ -1755,7 +2164,7 @@
   },
   "tags": [
     {
-      "name": "User"
+      "name": "Dashboard"
     },
     {
       "name": "ProjectAllocation"
@@ -1767,10 +2176,16 @@
       "name": "Role"
     },
     {
+      "name": "Task"
+    },
+    {
       "name": "TaskPriority"
     },
     {
       "name": "TaskStatus"
+    },
+    {
+      "name": "User"
     },
     {
       "name": "UserRole"

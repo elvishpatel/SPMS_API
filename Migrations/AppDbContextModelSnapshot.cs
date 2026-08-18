@@ -69,7 +69,7 @@ namespace SPMS_API.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("ProjectAllocation", (string)null);
+                    b.ToTable("ProjectAllocation");
                 });
 
             modelBuilder.Entity("SPMS_API.Models.ProjectMaster", b =>
@@ -94,7 +94,7 @@ namespace SPMS_API.Migrations
                     b.HasIndex("ProjectTitle")
                         .IsUnique();
 
-                    b.ToTable("ProjectMaster", (string)null);
+                    b.ToTable("ProjectMaster");
                 });
 
             modelBuilder.Entity("SPMS_API.Models.Role", b =>
@@ -160,6 +160,9 @@ namespace SPMS_API.Migrations
 
                     b.Property<string>("TaskDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TaskDueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("TaskEndDate")
                         .HasColumnType("datetime2");
@@ -347,19 +350,19 @@ namespace SPMS_API.Migrations
             modelBuilder.Entity("SPMS_API.Models.ProjectAllocation", b =>
                 {
                     b.HasOne("SPMS_API.Models.User", "Faculty")
-                        .WithMany()
+                        .WithMany("FacultyProjectAllocations")
                         .HasForeignKey("FacultyID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SPMS_API.Models.ProjectMaster", "ProjectMaster")
-                        .WithMany()
+                        .WithMany("ProjectAllocations")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SPMS_API.Models.User", "Student")
-                        .WithMany()
+                        .WithMany("StudentProjectAllocations")
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -374,19 +377,19 @@ namespace SPMS_API.Migrations
             modelBuilder.Entity("SPMS_API.Models.Task", b =>
                 {
                     b.HasOne("SPMS_API.Models.ProjectAllocation", "ProjectAllocation")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("ProjectAllocationID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SPMS_API.Models.TaskPriority", "TaskPriority")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("TaskPriorityID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SPMS_API.Models.TaskStatus", "TaskStatus")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("TaskStatusID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -401,9 +404,9 @@ namespace SPMS_API.Migrations
             modelBuilder.Entity("SPMS_API.Models.User", b =>
                 {
                     b.HasOne("SPMS_API.Models.UserType", "UserType")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("UserType");
@@ -412,20 +415,59 @@ namespace SPMS_API.Migrations
             modelBuilder.Entity("SPMS_API.Models.UserRole", b =>
                 {
                     b.HasOne("SPMS_API.Models.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SPMS_API.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.ProjectAllocation", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.ProjectMaster", b =>
+                {
+                    b.Navigation("ProjectAllocations");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.TaskPriority", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.TaskStatus", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.User", b =>
+                {
+                    b.Navigation("FacultyProjectAllocations");
+
+                    b.Navigation("StudentProjectAllocations");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("SPMS_API.Models.UserType", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

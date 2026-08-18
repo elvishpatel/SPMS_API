@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SPMS_API.Models
@@ -48,6 +48,7 @@ namespace SPMS_API.Models
         [StringLength(1)]
         [RegularExpression("^[ABC]?$", ErrorMessage = "Grade must be A, B, or C.")]
         public string? OverAllGrade { get; set; }
+
+        public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }
-

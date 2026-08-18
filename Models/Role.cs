@@ -15,5 +15,7 @@ namespace SPMS_API.Models
         [MaxLength(250)]
 
         public string? Description { get; set; } = string.Empty;
+
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

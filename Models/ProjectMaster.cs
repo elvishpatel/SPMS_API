@@ -13,5 +13,7 @@ namespace SPMS_API.Models
 
         [MaxLength(250)]
         public string? Description { get; set; }
+
+        public ICollection<ProjectAllocation> ProjectAllocations { get; set; } = new List<ProjectAllocation>();
     }
 }

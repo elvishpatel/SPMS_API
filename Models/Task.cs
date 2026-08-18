@@ -47,6 +47,8 @@ namespace SPMS_API.Models
 
         public DateTime? TaskStartDate { get; set; }
 
+        public DateTime? TaskDueDate { get; set; }
+
         public DateTime? TaskEndDate { get; set; }
 
         public DateTime? TaskCompletedTime { get; set; }

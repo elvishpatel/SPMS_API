@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using SPMS_API.Data;
-using SPMS_API.Models;
 using Microsoft.EntityFrameworkCore;
+using SPMS_API.Common;
+using SPMS_API.Data;
+using SPMS_API.DTOs;
+using SPMS_API.Models;
 
 namespace SPMS_API.Controllers
 {
@@ -19,70 +21,200 @@ namespace SPMS_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var userTypes = await _context.UserType.ToListAsync();
-            return Ok(userTypes);
+            try
+            {
+                var userTypes = await _context.UserType
+                    .Select(ut => new ReadUserType
+                    {
+                        UserTypeId = ut.UserTypeId,
+                        UserTypeName = ut.UserTypeName,
+                        Description = ut.Description
+                    })
+                    .ToListAsync();
+
+                return Ok(new ApiResponse<List<ReadUserType>>
+                {
+                    Success = true,
+                    Message = "User Types Retrieved Successfully",
+                    Data = userTypes
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<List<ReadUserType>>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving user types",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var userType = await _context.UserType.FindAsync(id);
-
-            if (userType == null)
+            try
             {
-                return NotFound();
-            }
+                var userType = await _context.UserType
+                    .Where(ut => ut.UserTypeId == id)
+                    .Select(ut => new ReadUserType
+                    {
+                        UserTypeId = ut.UserTypeId,
+                        UserTypeName = ut.UserTypeName,
+                        Description = ut.Description
+                    })
+                    .FirstOrDefaultAsync();
 
-            return Ok(userType);
+                if (userType == null)
+                {
+                    return NotFound(new ApiResponse<ReadUserType>
+                    {
+                        Success = false,
+                        Message = "User Type Not Found",
+                        Errors = new List<string> { $"No user type found with Id {id}" }
+                    });
+                }
+
+                return Ok(new ApiResponse<ReadUserType>
+                {
+                    Success = true,
+                    Message = "User Type Retrieved Successfully",
+                    Data = userType
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadUserType>
+                {
+                    Success = false,
+                    Message = "Error occurred while retrieving user type",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(UserType userType)
+        public async Task<IActionResult> Add(CreateUserType dto)
         {
-            userType.UserTypeId = 0;
-            _context.UserType.Add(userType);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var userType = new UserType
+                {
+                    UserTypeName = dto.UserTypeName,
+                    Description = dto.Description
+                };
 
-            return CreatedAtAction(nameof(GetById), new { id = userType.UserTypeId }, userType);
+                _context.UserType.Add(userType);
+                await _context.SaveChangesAsync();
+
+                var response = new ReadUserType
+                {
+                    UserTypeId = userType.UserTypeId,
+                    UserTypeName = userType.UserTypeName,
+                    Description = userType.Description
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = userType.UserTypeId }, new ApiResponse<ReadUserType>
+                {
+                    Success = true,
+                    Message = "User Type Added Successfully",
+                    Data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<ReadUserType>
+                {
+                    Success = false,
+                    Message = "Error occurred while adding user type",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UserType userType)
+        [HttpPut("{id:int:min(1)}")]
+        public async Task<IActionResult> Update(int id, UpdateUserType dto)
         {
-            if (userType.UserTypeId != 0 && userType.UserTypeId != id)
+            try
             {
-                return BadRequest("ID in route parameter does not match ID in request body.");
+                var userType = await _context.UserType.FindAsync(id);
+
+                if (userType == null)
+                {
+                    return NotFound(new ApiResponse<ReadUserType>
+                    {
+                        Success = false,
+                        Message = "User Type Not Found",
+                        Errors = new List<string> { $"No user type found with Id {id}" }
+                    });
+                }
+
+                userType.UserTypeName = dto.UserTypeName;
+                userType.Description = dto.Description;
+
+                await _context.SaveChangesAsync();
+
+                var response = new ReadUserType
+                {
+                    UserTypeId = userType.UserTypeId,
+                    UserTypeName = userType.UserTypeName,
+                    Description = userType.Description
+                };
+
+                return Ok(new ApiResponse<ReadUserType>
+                {
+                    Success = true,
+                    Message = "User Type Updated Successfully",
+                    Data = response
+                });
             }
-
-            var existingUserType = await _context.UserType.FindAsync(id);
-
-            if (existingUserType == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(new ApiResponse<ReadUserType>
+                {
+                    Success = false,
+                    Message = "Error occurred while updating user type",
+                    Errors = new List<string> { ex.Message }
+                });
             }
-
-            existingUserType.UserTypeName = userType.UserTypeName;
-            existingUserType.Description = userType.Description;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(existingUserType);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var userType = await _context.UserType.FindAsync(id);
-
-            if (userType == null)
+            try
             {
-                return NotFound();
+                var userType = await _context.UserType.FindAsync(id);
+
+                if (userType == null)
+                {
+                    return NotFound(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "User Type Not Found",
+                        Errors = new List<string> { $"No user type found with Id {id}" }
+                    });
+                }
+
+                _context.UserType.Remove(userType);
+                await _context.SaveChangesAsync();
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "User Type Deleted Successfully",
+                    Data = null
+                });
             }
-
-            _context.UserType.Remove(userType);
-            await _context.SaveChangesAsync();
-
-            return Ok("User Type deleted successfully.");
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred while deleting user type",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
     }
 }

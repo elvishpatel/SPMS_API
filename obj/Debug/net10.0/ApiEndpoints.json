@@ -1,23 +1,283 @@
 [
   {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetBottomStudents",
+    "RelativePath": "api/Dashboard/GetBottomStudents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetFacultyRankingsByProgress",
+    "RelativePath": "api/Dashboard/GetFacultyRankingsByProgress",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetFacultyStatistics",
+    "RelativePath": "api/Dashboard/GetFacultyStatistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetFacultyWorkload",
+    "RelativePath": "api/Dashboard/GetFacultyWorkload",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetGradeDistribution",
+    "RelativePath": "api/Dashboard/GetGradeDistribution",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetMonthlyCompletedTaskCount",
+    "RelativePath": "api/Dashboard/GetMonthlyCompletedTaskCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetMonthlyCompletion",
+    "RelativePath": "api/Dashboard/GetMonthlyCompletion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetOverdueProjects",
+    "RelativePath": "api/Dashboard/GetOverdueProjects",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetOverdueTasks",
+    "RelativePath": "api/Dashboard/GetOverdueTasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetPrioritySummary",
+    "RelativePath": "api/Dashboard/GetPrioritySummary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetProjectScoreSummary",
+    "RelativePath": "api/Dashboard/GetProjectScoreSummary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetProjectTaskStatistics",
+    "RelativePath": "api/Dashboard/GetProjectTaskStatistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetProjectTaskSummary",
+    "RelativePath": "api/Dashboard/GetProjectTaskSummary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetRoleStatistics",
+    "RelativePath": "api/Dashboard/GetRoleStatistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetRolesWithMoreThanTenUsers",
+    "RelativePath": "api/Dashboard/GetRolesWithMoreThanTenUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetRoleWiseActiveUserCount",
+    "RelativePath": "api/Dashboard/GetRoleWiseActiveUserCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetStudentTasks",
+    "RelativePath": "api/Dashboard/GetStudentTasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetStudentTaskStatistics",
+    "RelativePath": "api/Dashboard/GetStudentTaskStatistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTaskStatusSummary",
+    "RelativePath": "api/Dashboard/GetTaskStatusSummary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTopProjectsByScore",
+    "RelativePath": "api/Dashboard/GetTopProjectsByScore",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTopStudents",
+    "RelativePath": "api/Dashboard/GetTopStudents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTotalFaculty",
+    "RelativePath": "api/Dashboard/GetTotalFaculty",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTotalProjects",
+    "RelativePath": "api/Dashboard/GetTotalProjects",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetTotalStudents",
+    "RelativePath": "api/Dashboard/GetTotalStudents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetUpcomingDueTasks",
+    "RelativePath": "api/Dashboard/GetUpcomingDueTasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetUpcomingFollowUps",
+    "RelativePath": "api/Dashboard/GetUpcomingFollowUps",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.DashboardController",
+    "Method": "GetUsersByRole",
+    "RelativePath": "api/Dashboard/GetUsersByRole",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SPMS_API.Controllers.ProjectAllocationController",
-    "Method": "GetALl",
+    "Method": "GetAll",
     "RelativePath": "api/ProjectAllocation",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.ProjectAllocation",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.ProjectAllocationController",
@@ -28,22 +288,12 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "projectAllocation",
-        "Type": "SPMS_API.Models.ProjectAllocation",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateProjectAllocation",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.ProjectAllocation",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.ProjectAllocationController",
@@ -59,17 +309,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.ProjectAllocation",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.ProjectAllocationController",
@@ -85,22 +325,12 @@
         "IsRequired": true
       },
       {
-        "Name": "projectAllocation",
-        "Type": "SPMS_API.Models.ProjectAllocation",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateProjectAllocation",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.ProjectAllocation",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.ProjectAllocationController",
@@ -116,17 +346,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.ProjectAllocation",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.ProjectMasterController",
@@ -147,8 +367,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "project",
-        "Type": "SPMS_API.Models.ProjectMaster",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateProjectMaster",
         "IsRequired": true
       }
     ],
@@ -184,8 +404,8 @@
         "IsRequired": true
       },
       {
-        "Name": "project",
-        "Type": "SPMS_API.Models.ProjectMaster",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateProjectMaster",
         "IsRequired": true
       }
     ],
@@ -226,8 +446,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "role",
-        "Type": "SPMS_API.Models.Role",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateRole",
         "IsRequired": true
       }
     ],
@@ -263,8 +483,8 @@
         "IsRequired": true
       },
       {
-        "Name": "role",
-        "Type": "SPMS_API.Models.Role",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateRole",
         "IsRequired": true
       }
     ],
@@ -274,6 +494,85 @@
     "ContainingType": "SPMS_API.Controllers.RoleController",
     "Method": "Delete",
     "RelativePath": "api/Role/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.TaskController",
+    "Method": "GetAll",
+    "RelativePath": "api/Task",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.TaskController",
+    "Method": "Add",
+    "RelativePath": "api/Task",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateTask",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.TaskController",
+    "Method": "GetById",
+    "RelativePath": "api/Task/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.TaskController",
+    "Method": "Update",
+    "RelativePath": "api/Task/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateTask",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SPMS_API.Controllers.TaskController",
+    "Method": "Delete",
+    "RelativePath": "api/Task/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -305,8 +604,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "taskPriority",
-        "Type": "SPMS_API.Models.TaskPriority",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateTaskPriority",
         "IsRequired": true
       }
     ],
@@ -342,8 +641,8 @@
         "IsRequired": true
       },
       {
-        "Name": "taskPriority",
-        "Type": "SPMS_API.Models.TaskPriority",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateTaskPriority",
         "IsRequired": true
       }
     ],
@@ -384,8 +683,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "taskStatus",
-        "Type": "SPMS_API.Models.TaskStatus",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateTaskStatus",
         "IsRequired": true
       }
     ],
@@ -421,8 +720,8 @@
         "IsRequired": true
       },
       {
-        "Name": "taskStatus",
-        "Type": "SPMS_API.Models.TaskStatus",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateTaskStatus",
         "IsRequired": true
       }
     ],
@@ -445,27 +744,17 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SPMS.Controllers.UserController",
-    "Method": "GetALl",
+    "ContainingType": "SPMS_API.Controllers.UserController",
+    "Method": "GetAll",
     "RelativePath": "api/User",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "SPMS.Controllers.UserController",
+    "ContainingType": "SPMS_API.Controllers.UserController",
     "Method": "Add",
     "RelativePath": "api/User",
     "HttpMethod": "POST",
@@ -473,25 +762,15 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "SPMS_API.Models.User",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateUser",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "SPMS.Controllers.UserController",
+    "ContainingType": "SPMS_API.Controllers.UserController",
     "Method": "GetById",
     "RelativePath": "api/User/{id}",
     "HttpMethod": "GET",
@@ -504,20 +783,10 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "SPMS.Controllers.UserController",
+    "ContainingType": "SPMS_API.Controllers.UserController",
     "Method": "Update",
     "RelativePath": "api/User/{id}",
     "HttpMethod": "PUT",
@@ -530,25 +799,15 @@
         "IsRequired": true
       },
       {
-        "Name": "user",
-        "Type": "SPMS_API.Models.User",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateUser",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "SPMS.Controllers.UserController",
+    "ContainingType": "SPMS_API.Controllers.UserController",
     "Method": "Delete",
     "RelativePath": "api/User/{id}",
     "HttpMethod": "DELETE",
@@ -561,37 +820,17 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserRoleController",
-    "Method": "GetALl",
+    "Method": "GetAll",
     "RelativePath": "api/UserRole",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.UserRole",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserRoleController",
@@ -602,22 +841,12 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userrole",
-        "Type": "SPMS_API.Models.UserRole",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateUserRole",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.UserRole",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserRoleController",
@@ -633,17 +862,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.UserRole",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserRoleController",
@@ -659,22 +878,12 @@
         "IsRequired": true
       },
       {
-        "Name": "userrole",
-        "Type": "SPMS_API.Models.UserRole",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateUserRole",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.UserRole",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserRoleController",
@@ -690,17 +899,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "SPMS_API.Models.UserRole",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SPMS_API.Controllers.UserTypeController",
@@ -721,8 +920,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userType",
-        "Type": "SPMS_API.Models.UserType",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.CreateUserType",
         "IsRequired": true
       }
     ],
@@ -758,8 +957,8 @@
         "IsRequired": true
       },
       {
-        "Name": "userType",
-        "Type": "SPMS_API.Models.UserType",
+        "Name": "dto",
+        "Type": "SPMS_API.DTOs.UpdateUserType",
         "IsRequired": true
       }
     ],

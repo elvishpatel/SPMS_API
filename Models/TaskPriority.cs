@@ -14,5 +14,7 @@ namespace SPMS_API.Models
 
         [Required, MaxLength(20)]
         public string TaskPriorityCssClass { get; set; } = string.Empty;
+
+        public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }
