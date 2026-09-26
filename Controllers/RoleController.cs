@@ -1,9 +1,8 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
-using SPMS_API.Data;
 using SPMS_API.DTOs;
-using SPMS_API.Models;
+using SPMS_API.Services;
 
 namespace SPMS_API.Controllers
 {
@@ -11,26 +10,24 @@ namespace SPMS_API.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IRoleService _roleService;
+        private readonly IValidator<CreateRole> _createValidator;
+        private readonly IValidator<UpdateRole> _updateValidator;
 
-        public RoleController(AppDbContext context)
+        public RoleController(IRoleService roleService, IValidator<CreateRole> createValidator, IValidator<UpdateRole> updateValidator)
         {
-            _context = context;
+            _roleService = roleService;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                var roles = await _context.Role
-                    .Select(r => new ReadRole
-                    {
-                        RoleId = r.RoleId,
-                        RoleName = r.RoleName,
-                        Description = r.Description
-                    })
-                    .ToListAsync();
+                var roles = await _roleService.GetAllAsync();
 
                 return Ok(new ApiResponse<List<ReadRole>>
                 {
@@ -51,19 +48,12 @@ namespace SPMS_API.Controllers
         }
 
         [HttpGet("{id:int:min(1)}")]
+        [HttpGet("GetById/{id:int:min(1)}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var role = await _context.Role
-                    .Where(r => r.RoleId == id)
-                    .Select(r => new ReadRole
-                    {
-                        RoleId = r.RoleId,
-                        RoleName = r.RoleName,
-                        Description = r.Description
-                    })
-                    .FirstOrDefaultAsync();
+                var role = await _roleService.GetByIdAsync(id);
 
                 if (role == null)
                 {
@@ -94,36 +84,24 @@ namespace SPMS_API.Controllers
         }
 
         [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add(CreateRole dto)
         {
+            var validationResult = await _createValidator.ValidateAsync(dto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             try
             {
-                var role = new Role
-                {
-                    RoleName = dto.RoleName,
-                    Description = dto.Description
-                };
-
-                _context.Role.Add(role);
-                await _context.SaveChangesAsync();
-
-                var response = new ReadRole
-                {
-                    RoleId = role.RoleId,
-                    RoleName = role.RoleName,
-                    Description = role.Description
-                };
-
-                return CreatedAtAction(nameof(GetById), new { id = role.RoleId }, new ApiResponse<ReadRole>
-                {
-                    Success = true,
-                    Message = "Role Added Successfully",
-                    Data = response
-                });
+                var message = await _roleService.AddAsync(dto);
+                return Ok(new { Message = message });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ApiResponse<ReadRole>
+                return BadRequest(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "Error occurred while adding role",
@@ -133,13 +111,26 @@ namespace SPMS_API.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
+        [HttpPut("Update/{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateRole dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadRole>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
-                var role = await _context.Role.FindAsync(id);
+                var updated = await _roleService.UpdateAsync(id, dto);
 
-                if (role == null)
+                if (!updated)
                 {
                     return NotFound(new ApiResponse<ReadRole>
                     {
@@ -149,17 +140,7 @@ namespace SPMS_API.Controllers
                     });
                 }
 
-                role.RoleName = dto.RoleName;
-                role.Description = dto.Description;
-
-                await _context.SaveChangesAsync();
-
-                var response = new ReadRole
-                {
-                    RoleId = role.RoleId,
-                    RoleName = role.RoleName,
-                    Description = role.Description
-                };
+                var response = await _roleService.GetByIdAsync(id);
 
                 return Ok(new ApiResponse<ReadRole>
                 {
@@ -180,13 +161,14 @@ namespace SPMS_API.Controllers
         }
 
         [HttpDelete("{id:int:min(1)}")]
+        [HttpDelete("Delete/{id:int:min(1)}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var role = await _context.Role.FindAsync(id);
+                var deleted = await _roleService.DeleteAsync(id);
 
-                if (role == null)
+                if (!deleted)
                 {
                     return NotFound(new ApiResponse<object>
                     {
@@ -195,9 +177,6 @@ namespace SPMS_API.Controllers
                         Errors = new List<string> { $"No role found with Id {id}" }
                     });
                 }
-
-                _context.Role.Remove(role);
-                await _context.SaveChangesAsync();
 
                 return Ok(new ApiResponse<object>
                 {

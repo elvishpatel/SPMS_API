@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
@@ -12,10 +13,14 @@ namespace SPMS_API.Controllers
     public class TaskPriorityController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateTaskPriority> _createValidator;
+        private readonly IValidator<UpdateTaskPriority> _updateValidator;
 
-        public TaskPriorityController(AppDbContext context)
+        public TaskPriorityController(AppDbContext context, IValidator<CreateTaskPriority> createValidator, IValidator<UpdateTaskPriority> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -96,6 +101,18 @@ namespace SPMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateTaskPriority dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTaskPriority>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var taskPriority = new TaskPriority
@@ -135,6 +152,18 @@ namespace SPMS_API.Controllers
         [HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateTaskPriority dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTaskPriority>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var taskPriority = await _context.TaskPriority.FindAsync(id);

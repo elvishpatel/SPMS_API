@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../SPMS_API.test/SPMS_API.test.csproj" Id="959e72e0-328b-4798-b603-0ef6a284f954" />
   <Project Path="SPMS_API.csproj" />
 </Solution>

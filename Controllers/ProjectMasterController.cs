@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
@@ -12,10 +13,14 @@ namespace SPMS_API.Controllers
     public class ProjectMasterController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateProjectMaster> _createValidator;
+        private readonly IValidator<UpdateProjectMaster> _updateValidator;
 
-        public ProjectMasterController(AppDbContext context)
+        public ProjectMasterController(AppDbContext context, IValidator<CreateProjectMaster> createValidator, IValidator<UpdateProjectMaster> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -96,6 +101,18 @@ namespace SPMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateProjectMaster dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var project = new ProjectMaster
@@ -135,6 +152,18 @@ namespace SPMS_API.Controllers
         [HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateProjectMaster dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadProjectMaster>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var project = await _context.ProjectMaster.FindAsync(id);

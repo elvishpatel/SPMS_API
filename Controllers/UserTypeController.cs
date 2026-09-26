@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
@@ -12,10 +13,14 @@ namespace SPMS_API.Controllers
     public class UserTypeController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateUserType> _createValidator;
+        private readonly IValidator<UpdateUserType> _updateValidator;
 
-        public UserTypeController(AppDbContext context)
+        public UserTypeController(AppDbContext context, IValidator<CreateUserType> createValidator, IValidator<UpdateUserType> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -96,6 +101,18 @@ namespace SPMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateUserType dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUserType>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var userType = new UserType
@@ -135,6 +152,18 @@ namespace SPMS_API.Controllers
         [HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateUserType dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUserType>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var userType = await _context.UserType.FindAsync(id);

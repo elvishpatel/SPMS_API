@@ -1,10 +1,11 @@
-﻿namespace SPMS_API.DTOs
+﻿﻿﻿﻿namespace SPMS_API.DTOs
 {
     public class ReadProjectAllocation
     {
         public int ProjectAllocationID { get; set; }
         public int ProjectID { get; set; }
         public string? ProjectTitle { get; set; }
+        public string? ProjectDescription { get; set; }
         public int StudentID { get; set; }
         public string? StudentName { get; set; }
         public int FacultyID { get; set; }

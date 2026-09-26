@@ -97,4 +97,16 @@
 
         public string? StudentRemarks { get; set; }
     }
+
+    /// <summary>
+    /// Fields a student is permitted to update on one of their own tasks.
+    /// Scores, assignment details, priority, and faculty remarks remain faculty/admin only.
+    /// </summary>
+    public class UpdateStudentTaskProgress
+    {
+        public decimal ProgressPercentage { get; set; }
+        public DateTime? TaskStartDate { get; set; }
+        public DateTime? TaskCompletedTime { get; set; }
+        public string? StudentRemarks { get; set; }
+    }
 }

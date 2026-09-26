@@ -1,21 +1,36 @@
+using FluentValidation;
+using JWTDemo.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
 using SPMS_API.Data;
 using SPMS_API.DTOs;
 using SPMS_API.Models;
+using SPMS_API.Services;
 
 namespace SPMS_API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly TokenService _tokenService;
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateUser> _createValidator;
+        private readonly IValidator<UpdateUser> _updateValidator;
 
-        public UserController(AppDbContext context)
+        private readonly IFileService _fileService;
+
+        public UserController(AppDbContext context, IValidator<CreateUser> createValidator, IValidator<UpdateUser> updateValidator, TokenService tokenService, IFileService fileService)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
+            _tokenService = tokenService;
+            _fileService = fileService;
         }
 
         [HttpGet]
@@ -109,11 +124,200 @@ namespace SPMS_API.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add(CreateUser dto)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
             try
             {
+                var user = await _context.User.Include(u => u.UserType)
+                    .SingleOrDefaultAsync(u => u.Email == dto.Email && u.Password == dto.Password);
+
+                if (user == null)
+                {
+                    return Unauthorized(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Invalid Email or password",
+                        Errors = new List<string> { "Invalid credentials" }
+                    });
+                }
+
+                if (user.IsActive != true)
+                {
+                    return Unauthorized(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Account is inactive",
+                        Errors = new List<string> { "Please contact administrator" }
+                    });
+                }
+
+                var token = _tokenService.GenerateToken(user);
+
+                var userInfo = new
+                {
+                    user.UserId,
+                    user.FullName,
+                    user.Email,
+                    user.UserCode,
+                    user.MobileNumber,
+                    user.ProfilePicturePath,
+                    UserType = user.UserType?.UserTypeName,
+                    user.UserTypeId
+                };
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Login Successful",
+                    Data = new { Token = token, User = userInfo }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred during login",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
+        {
+            try
+            {
+                var studentUserType = await _context.UserType
+                    .FirstOrDefaultAsync(ut => ut.UserTypeName == "Student");
+
+                if (studentUserType == null)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Registration failed",
+                        Errors = new List<string> { "Student user type not configured. Please contact administrator." }
+                    });
+                }
+
+                var existingUser = await _context.User
+                    .AnyAsync(u => u.Email == dto.Email);
+
+                if (existingUser)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Registration failed",
+                        Errors = new List<string> { "Email already exists" }
+                    });
+                }
+
+                if (string.IsNullOrEmpty(dto.Password) || dto.Password.Length < 6)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Validation failed",
+                        Errors = new List<string> { "Password must be at least 6 characters" }
+                    });
+                }
+
+                if (dto.Password != dto.ConfirmPassword)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Validation failed",
+                        Errors = new List<string> { "Passwords do not match" }
+                    });
+                }
+
+                if (string.IsNullOrEmpty(dto.FullName))
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Validation failed",
+                        Errors = new List<string> { "Full name is required" }
+                    });
+                }
+
+                var user = new User
+                {
+                    UserTypeId = studentUserType.UserTypeId,
+                    UserType = studentUserType,
+                    FullName = dto.FullName,
+                    UserCode = dto.UserCode ?? string.Empty,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    MobileNumber = dto.MobileNumber ?? string.Empty,
+                    ProfilePicturePath = string.Empty,
+                    IsActive = true,
+                    IsDeleted = false
+                };
+
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
+
+                var token = _tokenService.GenerateToken(user);
+
+                var userInfo = new
+                {
+                    user.UserId,
+                    user.FullName,
+                    user.Email,
+                    user.UserCode,
+                    user.MobileNumber,
+                    UserType = studentUserType.UserTypeName,
+                    user.UserTypeId
+                };
+
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Registration Successful",
+                    Data = new { Token = token, User = userInfo }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Error occurred during registration",
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Add([FromForm] CreateUser dto)
+        {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUser>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+            try
+            {
+                string? uploadedPath = null;
+                if (dto.DocumentFile != null && dto.DocumentFile.Length > 0)
+                {
+                    uploadedPath = await _fileService.UploadFileAsync(dto.DocumentFile, "Users");
+                }
+
                 var user = new User
                 {
                     UserTypeId = dto.UserTypeId,
@@ -122,8 +326,8 @@ namespace SPMS_API.Controllers
                     Email = dto.Email,
                     Password = dto.Password,
                     MobileNumber = dto.MobileNumber,
-                    ProfilePicturePath = dto.ProfilePicturePath,
-                    IsActive = dto.IsActive
+                    ProfilePicturePath = uploadedPath,
+                    IsActive = dto.IsActive,
                 };
 
                 _context.User.Add(user);
@@ -166,8 +370,21 @@ namespace SPMS_API.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
-        public async Task<IActionResult> Update(int id, UpdateUser dto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update(int id, [FromForm] UpdateUser dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUser>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var user = await _context.User.FindAsync(id);
@@ -182,13 +399,24 @@ namespace SPMS_API.Controllers
                     });
                 }
 
+                // Replace the document only when a new file was actually uploaded
+                if (dto.DocumentFile != null && dto.DocumentFile.Length > 0)
+                {
+                    _fileService.DeleteFile(user.ProfilePicturePath);
+                    user.ProfilePicturePath = await _fileService.UploadFileAsync(dto.DocumentFile, "Users");
+                }
+
                 user.UserTypeId = dto.UserTypeId;
                 user.FullName = dto.FullName;
                 user.UserCode = dto.UserCode;
                 user.Email = dto.Email;
                 user.MobileNumber = dto.MobileNumber;
-                user.ProfilePicturePath = dto.ProfilePicturePath;
                 user.IsActive = dto.IsActive;
+
+                if (!string.IsNullOrWhiteSpace(dto.Password))
+                {
+                    user.Password = dto.Password;
+                }
 
                 await _context.SaveChangesAsync();
 
@@ -229,7 +457,7 @@ namespace SPMS_API.Controllers
         }
 
         [HttpDelete("{id:int:min(1)}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, [FromQuery] bool deleteFileOnly = false)
         {
             try
             {
@@ -245,6 +473,33 @@ namespace SPMS_API.Controllers
                     });
                 }
 
+                // deleteFileOnly=true removes just the uploaded document, keeping the user record
+                if (deleteFileOnly)
+                {
+                    if (string.IsNullOrEmpty(user.ProfilePicturePath))
+                    {
+                        return BadRequest(new ApiResponse<object>
+                        {
+                            Success = false,
+                            Message = "No document exists for this user.",
+                            Errors = new List<string> { "This user has no uploaded document." }
+                        });
+                    }
+
+                    _fileService.DeleteFile(user.ProfilePicturePath);
+                    user.ProfilePicturePath = string.Empty;
+                    await _context.SaveChangesAsync();
+
+                    return Ok(new ApiResponse<object>
+                    {
+                        Success = true,
+                        Message = "Document deleted successfully.",
+                        Data = null
+                    });
+                }
+
+                // Default: delete the physical file together with the database record
+                _fileService.DeleteFile(user.ProfilePicturePath);
                 _context.User.Remove(user);
                 await _context.SaveChangesAsync();
 
@@ -264,6 +519,22 @@ namespace SPMS_API.Controllers
                     Errors = new List<string> { ex.Message }
                 });
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("FillDDLUserType")]
+        public List<SelectListItem> FillDDLUserType()
+        {
+            var userTypes = _context.UserType.Select(ut => new SelectListItem
+            {
+                Value = ut.UserTypeId.ToString(),
+                Text = ut.UserTypeName
+            }).ToList();
+            if (userTypes.Count == 0)
+            {
+                userTypes.Add(new SelectListItem { Value = "", Text = "No User Types Available" });
+            }
+            return userTypes;
         }
     }
 }

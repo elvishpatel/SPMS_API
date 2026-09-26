@@ -1,4 +1,4 @@
-﻿namespace SPMS_API.DTOs
+namespace SPMS_API.DTOs
 {
     public class ReadUser
     {
@@ -23,6 +23,22 @@
         public bool? IsDeleted { get; set; }
     }
 
+    public class LoginUserDto
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class RegisterUserDto
+    {
+        public string FullName { get; set; } = string.Empty;
+        public string? UserCode { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string ConfirmPassword { get; set; } = string.Empty;
+        public string? MobileNumber { get; set; }
+    }
+
 
     public class CreateUser
     {
@@ -38,7 +54,8 @@
 
         public string MobileNumber { get; set; } = string.Empty;
 
-        public string ProfilePicturePath { get; set; } = string.Empty;
+        public IFormFile? DocumentFile { get; set; }
+
 
         public bool IsActive { get; set; }
     }
@@ -58,7 +75,8 @@
 
         public string MobileNumber { get; set; } = string.Empty;
 
-        public string ProfilePicturePath { get; set; } = string.Empty;
+        // Optional replacement document; when null the existing file is kept
+        public IFormFile? DocumentFile { get; set; }
 
         public bool IsActive { get; set; }
 

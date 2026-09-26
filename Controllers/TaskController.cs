@@ -1,34 +1,71 @@
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
 using SPMS_API.Data;
 using SPMS_API.DTOs;
+using System.Security.Claims;
 
 namespace SPMS_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateTask> _createValidator;
+        private readonly IValidator<UpdateTask> _updateValidator;
 
-        public TaskController(AppDbContext context)
+        public TaskController(AppDbContext context, IValidator<CreateTask> createValidator, IValidator<UpdateTask> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
+
+        // Reads the logged-in user's id from the JWT (UserId, sub, or NameIdentifier claim)
+        private int GetLoggedInUserId()
+        {
+            var claim = User.Claims.FirstOrDefault(c => (c.Type == ClaimTypes.NameIdentifier || c.Type == "UserId" || c.Type == "sub" || c.Type == "id") && int.TryParse(c.Value, out _));
+            return claim != null && int.TryParse(claim.Value, out var parsed) ? parsed : 0;
+        }
+
+        private bool IsAdmin() => User.IsInRole("Admin") || User.HasClaim(ClaimTypes.Role, "Admin") || User.HasClaim("role", "Admin");
+        private bool IsFaculty() => User.IsInRole("Faculty") || User.HasClaim(ClaimTypes.Role, "Faculty") || User.HasClaim("role", "Faculty");
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                var tasks = await _context.Task
+                var userId = GetLoggedInUserId();
+                var isAdmin = IsAdmin();
+                var isFaculty = IsFaculty();
+
+                var query = _context.Task
                     .Include(t => t.ProjectAllocation)
                         .ThenInclude(pa => pa.ProjectMaster)
                     .Include(t => t.ProjectAllocation)
                         .ThenInclude(pa => pa.Student)
                     .Include(t => t.TaskStatus)
                     .Include(t => t.TaskPriority)
+                    .AsQueryable();
+
+                // Admin sees everything; faculty only tasks of their own allocations;
+                // students only tasks assigned to them.
+                if (!isAdmin && isFaculty)
+                {
+                    query = query.Where(t => t.ProjectAllocation.FacultyID == userId);
+                }
+                else if (!isAdmin)
+                {
+                    query = query.Where(t => t.ProjectAllocation.StudentID == userId);
+                }
+
+                var tasks = await query
                     .Select(t => new ReadTask
                     {
                         TaskID = t.TaskID,
@@ -77,7 +114,11 @@ namespace SPMS_API.Controllers
         {
             try
             {
-                var task = await _context.Task
+                var userId = GetLoggedInUserId();
+                var isAdmin = IsAdmin();
+                var isFaculty = IsFaculty();
+
+                var query = _context.Task
                     .Include(t => t.ProjectAllocation)
                         .ThenInclude(pa => pa.ProjectMaster)
                     .Include(t => t.ProjectAllocation)
@@ -85,6 +126,19 @@ namespace SPMS_API.Controllers
                     .Include(t => t.TaskStatus)
                     .Include(t => t.TaskPriority)
                     .Where(t => t.TaskID == id)
+                    .AsQueryable();
+
+                // Non-admin users can only see their own task
+                if (!isAdmin && isFaculty)
+                {
+                    query = query.Where(t => t.ProjectAllocation.FacultyID == userId);
+                }
+                else if (!isAdmin)
+                {
+                    query = query.Where(t => t.ProjectAllocation.StudentID == userId);
+                }
+
+                var task = await query
                     .Select(t => new ReadTask
                     {
                         TaskID = t.TaskID,
@@ -140,8 +194,21 @@ namespace SPMS_API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Faculty")]
         public async Task<IActionResult> Add(CreateTask dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTask>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var task = new SPMS_API.Models.Task
@@ -176,7 +243,7 @@ namespace SPMS_API.Controllers
                     .Include(t => t.TaskPriority)
                     .FirstOrDefaultAsync(t => t.TaskID == task.TaskID);
 
-                var result = new ReadTask
+                var response = new ReadTask
                 {
                     TaskID = task.TaskID,
                     ProjectAllocationID = task.ProjectAllocationID,
@@ -205,7 +272,7 @@ namespace SPMS_API.Controllers
                 {
                     Success = true,
                     Message = "Task Added Successfully",
-                    Data = result
+                    Data = response
                 });
             }
             catch (Exception ex)
@@ -220,8 +287,21 @@ namespace SPMS_API.Controllers
         }
 
         [HttpPut("{id:int:min(1)}")]
+        [Authorize(Roles = "Admin,Faculty")]
         public async Task<IActionResult> Update(int id, UpdateTask dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTask>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var existingTask = await _context.Task.FindAsync(id);
@@ -264,7 +344,7 @@ namespace SPMS_API.Controllers
                     .Include(t => t.TaskPriority)
                     .FirstOrDefaultAsync(t => t.TaskID == existingTask.TaskID);
 
-                var result = new ReadTask
+                var response = new ReadTask
                 {
                     TaskID = existingTask.TaskID,
                     ProjectAllocationID = existingTask.ProjectAllocationID,
@@ -293,7 +373,7 @@ namespace SPMS_API.Controllers
                 {
                     Success = true,
                     Message = "Task Updated Successfully",
-                    Data = result
+                    Data = response
                 });
             }
             catch (Exception ex)
@@ -308,6 +388,7 @@ namespace SPMS_API.Controllers
         }
 
         [HttpDelete("{id:int:min(1)}")]
+        [Authorize(Roles = "Admin,Faculty")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -342,6 +423,124 @@ namespace SPMS_API.Controllers
                     Errors = new List<string> { ex.Message }
                 });
             }
+        }
+
+        // Dropdown data for the task form (project allocations with student names)
+        [HttpGet("FillDDLProjectAllocation")]
+        [Authorize(Roles = "Admin,Faculty")]
+        public List<SelectListItem> FillDDLProjectAllocation()
+        {
+            var userId = GetLoggedInUserId();
+            var isAdmin = IsAdmin();
+
+            var query = _context.ProjectAllocation
+                .Include(pa => pa.ProjectMaster)
+                .Include(pa => pa.Student)
+                .AsQueryable();
+
+            // Faculty only sees their own allocations in the dropdown
+            if (!isAdmin)
+            {
+                query = query.Where(pa => pa.FacultyID == userId);
+            }
+
+            var allocations = query
+                .Select(pa => new SelectListItem
+                {
+                    Value = pa.ProjectAllocationID.ToString(),
+                    Text = pa.ProjectMaster.ProjectTitle + " - " + pa.Student.FullName
+                }).ToList();
+            if (allocations.Count == 0)
+            {
+                allocations.Add(new SelectListItem { Value = "", Text = "No Project Allocations Available" });
+            }
+            return allocations;
+        }
+
+        [HttpGet("FillDDLTaskStatus")]
+        public List<SelectListItem> FillDDLTaskStatus()
+        {
+            var taskStatuses = _context.TaskStatus.Select(ts => new SelectListItem
+            {
+                Value = ts.TaskStatusID.ToString(),
+                Text = ts.TaskStatusName
+            }).ToList();
+            if (taskStatuses.Count == 0)
+            {
+                taskStatuses.Add(new SelectListItem { Value = "", Text = "No Task Statuses Available" });
+            }
+            return taskStatuses;
+        }
+
+        [HttpGet("FillDDLTaskPriority")]
+        public List<SelectListItem> FillDDLTaskPriority()
+        {
+            var taskPriorities = _context.TaskPriority.Select(tp => new SelectListItem
+            {
+                Value = tp.TaskPriorityId.ToString(),
+                Text = tp.TaskPriorityName
+            }).ToList();
+            if (taskPriorities.Count == 0)
+            {
+                taskPriorities.Add(new SelectListItem { Value = "", Text = "No Task Priorities Available" });
+            }
+            return taskPriorities;
+        }
+
+        // Student progress update: progress, remarks and completion only
+        [HttpPatch("{id:int:min(1)}/progress")]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> UpdateProgress(int id, UpdateStudentTaskProgress dto)
+        {
+            if (dto.ProgressPercentage < 0 || dto.ProgressPercentage > 100)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = new List<string> { "Progress percentage must be between 0 and 100." }
+                });
+            }
+
+            var userId = GetLoggedInUserId();
+            var task = await _context.Task
+                .Include(t => t.ProjectAllocation)
+                .FirstOrDefaultAsync(t => t.TaskID == id && t.ProjectAllocation.StudentID == userId);
+            if (task == null)
+            {
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Task Not Found",
+                    Errors = new List<string> { "The task does not exist or is not assigned to you." }
+                });
+            }
+
+            task.ProgressPercentage = dto.ProgressPercentage;
+            task.TaskStartDate = dto.TaskStartDate ?? task.TaskStartDate;
+            task.TaskCompletedTime = dto.ProgressPercentage >= 100
+                ? dto.TaskCompletedTime ?? DateTime.UtcNow
+                : null;
+            task.StudentRemarks = dto.StudentRemarks;
+
+            // Keep the status aligned with the reported progress
+            var statusName = dto.ProgressPercentage >= 100 ? "Completed"
+                : dto.ProgressPercentage > 0 ? "In Progress" : "Pending";
+            var matchingStatus = await _context.TaskStatus
+                .FirstOrDefaultAsync(s => s.TaskStatusName == statusName);
+            if (matchingStatus != null)
+            {
+                task.TaskStatusID = matchingStatus.TaskStatusID;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Task progress updated successfully",
+                Data = null
+            });
         }
     }
 }

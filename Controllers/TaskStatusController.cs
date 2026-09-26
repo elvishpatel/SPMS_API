@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
@@ -12,10 +13,14 @@ namespace SPMS_API.Controllers
     public class TaskStatusController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateTaskStatus> _createValidator;
+        private readonly IValidator<UpdateTaskStatus> _updateValidator;
 
-        public TaskStatusController(AppDbContext context)
+        public TaskStatusController(AppDbContext context, IValidator<CreateTaskStatus> createValidator, IValidator<UpdateTaskStatus> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -96,6 +101,18 @@ namespace SPMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateTaskStatus dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTaskStatus>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var taskStatus = new Models.TaskStatus
@@ -135,6 +152,18 @@ namespace SPMS_API.Controllers
         [HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateTaskStatus dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadTaskStatus>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var taskStatus = await _context.TaskStatus.FindAsync(id);

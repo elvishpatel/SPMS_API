@@ -1,4 +1,6 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS_API.Common;
 using SPMS_API.Data;
@@ -12,10 +14,14 @@ namespace SPMS_API.Controllers
     public class UserRoleController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IValidator<CreateUserRole> _createValidator;
+        private readonly IValidator<UpdateUserRole> _updateValidator;
 
-        public UserRoleController(AppDbContext context)
+        public UserRoleController(AppDbContext context, IValidator<CreateUserRole> createValidator, IValidator<UpdateUserRole> updateValidator)
         {
             _context = context;
+            _createValidator = createValidator;
+            _updateValidator = updateValidator;
         }
 
         [HttpGet]
@@ -104,6 +110,18 @@ namespace SPMS_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateUserRole dto)
         {
+            var result = await _createValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUserRole>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var userRole = new UserRole
@@ -150,6 +168,18 @@ namespace SPMS_API.Controllers
         [HttpPut("{id:int:min(1)}")]
         public async Task<IActionResult> Update(int id, UpdateUserRole dto)
         {
+            var result = await _updateValidator.ValidateAsync(dto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(new ApiResponse<ReadUserRole>
+                {
+                    Success = false,
+                    Message = "Validation failed",
+                    Errors = result.Errors.Select(e => e.ErrorMessage).ToList()
+                });
+            }
+
             try
             {
                 var userRole = await _context.UserRole.FindAsync(id);
@@ -237,6 +267,35 @@ namespace SPMS_API.Controllers
                     Errors = new List<string> { ex.Message }
                 });
             }
+        }
+
+        [HttpGet("FillDDLUser")]
+        public List<SelectListItem> FillDDLUser() {
+            var users = _context.User.Select(u => new SelectListItem
+            {
+                Value = u.UserId.ToString(),
+                Text = u.FullName
+            }).ToList();
+            if(users.Count == 0)
+            {
+                users.Add(new SelectListItem { Value = "", Text = "No Users Available" });
+            }
+            return users;
+        }
+
+        [HttpGet("FillDDLRole")]
+        public List<SelectListItem> FillDDLRole()
+        {
+            var roles = _context.Role.Select(r => new SelectListItem
+            {
+                Value = r.RoleId.ToString(),
+                Text = r.RoleName
+            }).ToList();
+            if (roles.Count == 0)
+            {
+                roles.Add(new SelectListItem { Value = "", Text = "No Roles Available" });
+            }
+            return roles;
         }
     }
 }
